@@ -18,7 +18,6 @@ const drawcanvas = () => {
     .select("#canvas")
     .attr("width", width)
     .attr("height", height);
-  console.log(canvas);
 };
 const generateScales = () => {};
 const generateAxis = () => {};
