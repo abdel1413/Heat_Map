@@ -1,0 +1,16 @@
+#title,
+#description {
+  text-align: center;
+}
+
+#title {
+  margin-bottom: 0;
+}
+
+#description {
+  margin-top: 0;
+}
+
+#canvas {
+  background-color: royalblue;
+}
