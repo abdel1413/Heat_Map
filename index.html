@@ -11,7 +11,16 @@
 <body>
     <h1 id="title">Monthly Global Land-Surface Temperature</h1>
     <h2 id="description">1753 - 2015: base temperature 8.66℃</h2>
-     <svg id="canvas"></svg>
+    <svg class='legend'>
+        <div id='legend-container'>
+
+            <rect width='150' height="20" x='300', y='20' fill='blue'>1</rect>
+            <rect width='150' height="20" x='350', y='20' fill='red'>2</rect>
+            <rect width='150' height="20" x='400', y='20' fill='green'>3</rect>
+            <rect width='150' height="20" x='450', y='20' fill='orange'>4</rect>
+            <rect width='150' height="20" x='500', y='20' fill='yellow'>5</rect>
+        </div>
+    </svg>
 </body>
 <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
 <script src="script.js"></script>

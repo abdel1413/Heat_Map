@@ -12,5 +12,19 @@
 }
 
 #canvas {
-  background-color: royalblue;
+  /* background-color: royalblue; */
+
+  background-color: lightgray;
+}
+
+#tooltip {
+  background-color: rgba(12, 12, 12, 0.6);
+  width: auto;
+  color: #fff;
+  padding: 10px;
+  opacity: 0.5;
+}
+
+#legend-container {
+  border: 2px solid red;
 }
