@@ -53,12 +53,44 @@ const drawcanvas = () => {
   //     .attr("x", "300")
   //     .attr("y", "400")
   //     .style("fill", "orange");
+
+  const legendData = [28, 39, 50, 61, 72, 83, 95, 106, 117, 128];
+
+  //.tickFormat(function (d){
+  //     return d3.format(".1f")(d/10);
+  // })
+
+  //const legendData = [2, 3, 5, 6, 7, 8, 9, 10, 11, 12];
+
+  const legend = d3.select("body");
+  legend
+    .append("svg")
+    .attr("id", "legend")
+    .attr("width", width)
+    .attr("height", "50")
+    .attr("margin", "40")
+    .style("background-color", "yellow")
+    .selectAll("rect")
+    .data(legendData)
+    .enter()
+    .append("rect")
+    .attr("width", "50")
+    .attr("height", "50")
+    .attr("x", (d) => console.log(d))
+    .attr("y", (d) => console.log(d))
+    .style("fill", "green")
+    .style("border", "3px solid red");
 };
 
 const generateScales = () => {
   //min and max year
   minYear = d3.min(monthlyVariance, (d) => d.year);
   maxYear = d3.max(monthlyVariance, (d) => d.year);
+
+  // const legendMin = d3.min(legendData, (d) => console.log(d));
+  // const legendMax = d3.max(legendData, (d) => console.log(d));
+  // const legendXScale = d3.range([padding, width - padding]);
+  //const legendYScale
 
   xScale = d3
     .scaleLinear()
@@ -72,6 +104,10 @@ const generateScales = () => {
     .range([padding, height - padding]);
 };
 const generateAxis = () => {
+  // const legendXaxis = d3
+  //   .axisBottom(legendXScale)
+  //   .tickFormat((d) => d3.format(".1f")(d / 10));
+
   //d3.format("d") // => print as integer/ digits
   xAxis = d3.axisBottom(xScale).tickFormat(d3.format("d"));
   canvas
@@ -91,6 +127,7 @@ const generateAxis = () => {
     .attr("transform", "translate(" + padding + ",0)");
 };
 
+//mouse handler
 const mouseOverHandler = (e, d) => {
   const yearMonth = `${d.year} - ${months[d.month]}`;
   const temp = `${d.baseTemperature}`;
@@ -111,8 +148,6 @@ const mouseOverHandler = (e, d) => {
 const mouseOutHandler = () => {
   tooltip.style("visibility", "hidden");
 };
-
-//
 
 const drawCells = (monthlyVariance) => {
   canvas
@@ -158,33 +193,30 @@ const drawCells = (monthlyVariance) => {
     .on("mouseover", mouseOverHandler)
     .on("mouseout", mouseOutHandler);
 
-  let legend = canvas.append("g").attr("id", "legend");
+  // let legend = d3.select("body").append("g").attr("id", "legend");
 
-  legend.append("g").attr("id", "legend-rect");
-
-  legend
-    .selectAll("rect")
-    .data([10, 20, 30, 40, 50])
-    .enter()
-    .append("rect")
-    .attr("width", "100")
-    .attr("height", "20")
-    .attr("margin", "10")
-    .attr("x", "100")
-    .attr("y", "580")
-    .style("fill", (d, i) => {
-      console.log("ff", d);
-      const variance = d.variance;
-      if (variance <= -1) {
-        return "#4575B4";
-      } else if (variance <= 0) {
-        return "#74ADD1";
-      } else if (variance <= 1) {
-        return "#000";
-      } else {
-        return "#D83932";
-      }
-    });
+  // legend
+  //   .selectAll("rect")
+  //   .data([10, 20, 30, 40, 50])
+  //   .enter()
+  //   .append("rect")
+  //   .attr("width", "100")
+  //   .attr("height", "20")
+  //   .attr("margin", "10")
+  //   .attr("x", "100")
+  //   .attr("y", "580")
+  //   .style("fill", (d, i) => {
+  //     const variance = d.variance;
+  //     if (variance <= -1) {
+  //       return "#4575B4";
+  //     } else if (variance <= 0) {
+  //       return "#74ADD1";
+  //     } else if (variance <= 1) {
+  //       return "#000";
+  //     } else {
+  //       return "#D83932";
+  //     }
+  //   });
 
   tooltip = d3
     .select("body")
