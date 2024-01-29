@@ -31,6 +31,23 @@ const months = [
 ];
 
 months.reverse();
+let legend,
+  legXScale,
+  legYScale,
+  legXAxis,
+  legYAxis,
+  legHeight = "100",
+  legWidth = "1000",
+  legPadding = "20";
+
+const legendData = [28, 39, 50, 61, 72, 83, 95, 106, 117, 128];
+
+const jsonData = [
+  { x_axis: "330", y_axis: "30", color: "#4575B4" },
+  { x_axis: "420", y_axis: "30", color: "#74ADD1" },
+  { x_axis: "520", y_axis: "30", color: "blue" },
+  { x_axis: "615", y_axis: "30", color: "#D83932" },
+];
 
 const drawcanvas = () => {
   canvas = d3
@@ -54,43 +71,41 @@ const drawcanvas = () => {
   //     .attr("y", "400")
   //     .style("fill", "orange");
 
-  const legendData = [28, 39, 50, 61, 72, 83, 95, 106, 117, 128];
-
-  //.tickFormat(function (d){
-  //     return d3.format(".1f")(d/10);
-  // })
-
   //const legendData = [2, 3, 5, 6, 7, 8, 9, 10, 11, 12];
 
-  const legend = d3.select("body");
+  legend = d3.select("body");
   legend
     .append("svg")
     .attr("id", "legend")
-    .attr("width", width)
-    .attr("height", "50")
-    .attr("margin", "40")
-    .style("background-color", "yellow")
+    .attr("width", legWidth)
+    .attr("height", legHeight)
+
     .selectAll("rect")
-    .data(legendData)
+    .data(jsonData)
     .enter()
     .append("rect")
-    .attr("width", "50")
+    .attr("width", "100")
     .attr("height", "50")
-    .attr("x", (d) => console.log(d))
-    .attr("y", (d) => console.log(d))
-    .style("fill", "green")
-    .style("border", "3px solid red");
+    .attr("x", (d, i) => {
+      return d.x_axis;
+    })
+    .attr("y", (d) => d.y_axis)
+
+    .style("fill", (d) => {
+      console.log("d", d);
+      return d.color;
+    });
 };
 
 const generateScales = () => {
+  legXScale = d3
+    .scaleLinear()
+    .range([legPadding, legWidth - legPadding])
+    .domain([d3.min(legendData), d3.max(legendData)]);
+
   //min and max year
   minYear = d3.min(monthlyVariance, (d) => d.year);
   maxYear = d3.max(monthlyVariance, (d) => d.year);
-
-  // const legendMin = d3.min(legendData, (d) => console.log(d));
-  // const legendMax = d3.max(legendData, (d) => console.log(d));
-  // const legendXScale = d3.range([padding, width - padding]);
-  //const legendYScale
 
   xScale = d3
     .scaleLinear()
@@ -104,9 +119,15 @@ const generateScales = () => {
     .range([padding, height - padding]);
 };
 const generateAxis = () => {
-  // const legendXaxis = d3
-  //   .axisBottom(legendXScale)
-  //   .tickFormat((d) => d3.format(".1f")(d / 10));
+  legXAxis = d3
+    .axisBottom(legXScale)
+    .tickFormat((d) => d3.format(".1f")(d / 10));
+
+  let legSvg = d3.select("#legend");
+  legSvg
+    .append("g")
+    .call(legXAxis)
+    .attr("transform", "translate(0," + (legHeight - legPadding) + ")");
 
   //d3.format("d") // => print as integer/ digits
   xAxis = d3.axisBottom(xScale).tickFormat(d3.format("d"));
@@ -130,7 +151,7 @@ const generateAxis = () => {
 //mouse handler
 const mouseOverHandler = (e, d) => {
   const yearMonth = `${d.year} - ${months[d.month]}`;
-  const temp = `${d.baseTemperature}`;
+  const temp = (baseTemperature + d.variance).toFixed(2);
   const variance = `${d.variance}`;
   tooltip
     .style("visibility", "visible")
@@ -141,8 +162,8 @@ const mouseOverHandler = (e, d) => {
     .html(
       () =>
         `<span>${yearMonth}</span><br> 
-        <span>${baseTemperature}</span><br>
-        <span>${variance}</span>`
+        <span>${temp}\xB0C</span><br>
+        <span>${variance}\xB0C</span>`
     );
 };
 const mouseOutHandler = () => {

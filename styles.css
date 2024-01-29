@@ -23,6 +23,14 @@
   color: #fff;
   padding: 10px;
   opacity: 0.5;
+  text-align: center;
+  font-weight: 100;
+  font-size: 1.5rem;
+  border-radius: 10px;
+}
+
+#legend {
+  margin: auto;
 }
 
 #legend-container {
